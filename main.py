@@ -14,11 +14,18 @@ while True:
         location = config[instance]['location']
         url = location['url']
         headers = location['headers']
-        response = requests.get(url, headers=headers)
-        if response.status_code == location["200"]:
-            print(f"{instance} Responded with correct code!")
+        tolerance = config[instance]['tolerance']
+        ok = False
+        while tolerance > 0:
+            response = requests.get(url, headers=headers)
+            if response.status_code == location["response_code"]:
+                print(f"{instance} Responded with correct code!")
+                ok = True
+                break
+            print(f"{instance} said {response.status_code}!")
+            tolerance -= 1
+        if ok:
             continue
-        print(f"{instance} said {response.status_code}!")
         if config[instance]['discord']:
             webhook = DiscordWebhook(url=config[instance]['discord'], content=f"{instance} is down!")
             response = webhook.execute()
