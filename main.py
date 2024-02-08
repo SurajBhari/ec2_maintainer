@@ -19,7 +19,7 @@ while True:
     last_second = get_second()
     for instance in config.keys():
         if count % config[instance]['interval'] != 0:
-            print("Not time to check")
+            print(f"{count}. Not time to check {instance}...")
             continue # Skip if not time to check
         print(f"Checking {instance}...")
         location = config[instance]['location']
