@@ -41,6 +41,7 @@ while True:
                 break
             print(f"{instance} said {response.status_code}!")
             tolerance -= 1
+            time.sleep(1)
         if ok:
             continue
         if config[instance]['discord']:
