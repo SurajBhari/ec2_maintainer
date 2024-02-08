@@ -59,9 +59,10 @@ while True:
         ec2.start_instances(InstanceIds=[instance])
         waiter = ec2.get_waiter('instance_running')
         waiter.wait(InstanceIds=[instance])
-        webhook = DiscordWebhook(url=config[instance]['discord'])
-        webhook.content = f"{instance} has been restarted!"
-        response = webhook.execute()
+        if config[instance]['discord']:
+            webhook = DiscordWebhook(url=config[instance]['discord'])
+            webhook.content = f"{instance} has been restarted!"
+            response = webhook.execute()
 
     count += 1
 
