@@ -3,10 +3,20 @@ from discord_webhook import DiscordWebhook
 import requests
 from botocore.config import Config
 import boto3
+import time
+
+def get_second():
+    return int(str(int(time.time()))[-1]) # see this logic ? its so complex. yet so simple
+
 
 count = 1
+last_second = get_second()
+config = json.load(open('config.json', "r"))
+
 while True:
-    config = json.load(open('config.json', "r"))
+    while last_second == get_second():
+        time.sleep(0.1)
+    last_second = get_second()
     for instance in config.keys():
         if count % config[instance]['interval'] != 0:
             print("Not time to check")
@@ -19,7 +29,12 @@ while True:
         timeout = location['timeout']
         ok = False
         while tolerance > 0:
-            response = requests.get(url, headers=headers, timeout=timeout)
+            try:
+                response = requests.get(url, headers=headers, timeout=timeout)
+            except Exception as e:
+                print(f"{instance} is down!")
+                tolerance -= 1
+                continue
             if response.status_code == location["response_code"]:
                 print(f"{instance} Responded with correct code!")
                 ok = True
@@ -44,6 +59,7 @@ while True:
         ec2.start_instances(InstanceIds=[instance])
         waiter = ec2.get_waiter('instance_running')
         waiter.wait(InstanceIds=[instance])
+        webhook = DiscordWebhook(url=config[instance]['discord'])
         webhook.content = f"{instance} has been restarted!"
         response = webhook.execute()
 
