@@ -29,6 +29,7 @@ while True:
         timeout = location['timeout']
         ok = False
         while tolerance > 0:
+            time.sleep(1)
             try:
                 response = requests.get(url, headers=headers, timeout=timeout)
             except Exception as e:
@@ -41,7 +42,6 @@ while True:
                 break
             print(f"{instance} said {response.status_code}!")
             tolerance -= 1
-            time.sleep(1)
         if ok:
             continue
         if config[instance]['discord']:
