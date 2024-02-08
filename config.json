@@ -1,0 +1,16 @@
+{
+    "instance_id": {
+        "location": {
+            "url": "https://streamsnip.com",
+            "headers": {},
+            "response_code" : 200 
+        },
+        "ec2":{
+            "region": "us-west-2",
+            "aws_access_key_id": "",
+            "aws_secret_access_key": ""
+        },
+        "interval": "5",
+        "discord": ""
+    }
+}
