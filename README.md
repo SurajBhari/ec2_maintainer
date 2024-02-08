@@ -4,7 +4,7 @@ This is a simple script that will stop and start EC2 instances if it fails to GE
 
 
 ## Flowchart
-
+```
 +-------------------+
 |       Start       |
 +-------------------+
@@ -42,7 +42,7 @@ This is a simple script that will stop and start EC2 instances if it fails to GE
 |  unreachable URL)      |          |
 +------------------------+          |
         + --------->----------------+
-
+```
 
 
 ## Configuration
