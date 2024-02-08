@@ -4,20 +4,22 @@ import requests
 from botocore.config import Config
 import boto3
 
-count = 0
+count = 1
 while True:
     config = json.load(open('config.json', "r"))
     for instance in config.keys():
-        if config[instance]['interval'] % count != 0:
+        if count % config[instance]['interval'] != 0:
+            print("Not time to check")
             continue # Skip if not time to check
         print(f"Checking {instance}...")
         location = config[instance]['location']
         url = location['url']
         headers = location['headers']
         tolerance = config[instance]['tolerance']
+        timeout = location['timeout']
         ok = False
         while tolerance > 0:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=timeout)
             if response.status_code == location["response_code"]:
                 print(f"{instance} Responded with correct code!")
                 ok = True
