@@ -11,12 +11,12 @@ def get_second():
 
 count = 1
 last_second = get_second()
-config = json.load(open('config.json', "r"))
 
 while True:
     while last_second == get_second():
         time.sleep(0.1)
     last_second = get_second()
+    config = json.load(open('config.json', "r"))
     for instance in config.keys():
         if count % config[instance]['interval'] != 0:
             print(f"{count}. Not time to check {instance}...")
