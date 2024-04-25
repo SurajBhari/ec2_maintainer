@@ -2,6 +2,7 @@
 
 This is a simple script that will stop and start EC2 instances if it fails to GET a particular URL. This is useful for maintaining EC2 instances that are not behind a load balancer.
 
+![image](https://github.com/SurajBhari/ec2_maintainer/assets/45149585/c0021465-01af-4c82-8c7f-a9ae7ec33502)
 
 ## Flowchart
 ```
