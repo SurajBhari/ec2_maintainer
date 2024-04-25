@@ -48,7 +48,7 @@ while True:
         if config[instance]['discord']:
             embed = DiscordEmbed(
                 title=f"{url} is down!", 
-                color='16711680',
+                color=0xf54242,
                 description=f"{instance} is down! Restarting now..."
             )
             webhook = DiscordWebhook(
@@ -74,7 +74,7 @@ while True:
         if config[instance]['discord']:
             embed = DiscordEmbed(
                 title=f"{instance} has been restarted!", 
-                color='65280',
+                color=0x00ab00,
             )
             webhook = DiscordWebhook(
                 username = project_name,
