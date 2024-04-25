@@ -1,5 +1,5 @@
 import json
-from discord_webhook import DiscordWebhook
+from discord_webhook import DiscordWebhook, DiscordEmbed
 import requests
 from botocore.config import Config
 import boto3
@@ -8,6 +8,7 @@ import time
 def get_second():
     return int(str(int(time.time()))[-1]) # see this logic ? its so complex. yet so simple
 
+logo_link = ""
 
 count = 1
 last_second = get_second()
@@ -45,7 +46,17 @@ while True:
         if ok:
             continue
         if config[instance]['discord']:
-            webhook = DiscordWebhook(url=config[instance]['discord'], content=f"{instance} is down!")
+            embed = DiscordEmbed(
+                title=f"{url} is down!", 
+                color='16711680',
+                description=f"{instance} is down! Restarting now..."
+            )
+            webhook = DiscordWebhook(
+                username = "Ec2-Maintainer", 
+                avatar_url=logo_link, 
+                url=config[instance]['discord'], 
+                embeds=[embed]
+            )
             response = webhook.execute()
         ec2 = config[instance]['ec2']
         ec2 = boto3.client(
@@ -61,8 +72,16 @@ while True:
         waiter = ec2.get_waiter('instance_running')
         waiter.wait(InstanceIds=[instance])
         if config[instance]['discord']:
-            webhook = DiscordWebhook(url=config[instance]['discord'])
-            webhook.content = f"{instance} has been restarted!"
+            embed = DiscordEmbed(
+                title=f"{instance} has been restarted!", 
+                color='65280',
+            )
+            webhook = DiscordWebhook(
+                username = "Ec2-Maintainer",
+                avatar_url=logo_link,
+                url=config[instance]['discord'], 
+                embeds=[embed]
+            )
             response = webhook.execute()
 
     count += 1
