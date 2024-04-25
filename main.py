@@ -8,8 +8,8 @@ import time
 def get_second():
     return int(str(int(time.time()))[-1]) # see this logic ? its so complex. yet so simple
 
-logo_link = ""
-
+logo_link = "https://raw.githubusercontent.com/SurajBhari/ec2_maintainer/main/256_ec2_maintainer.png"
+project_name = "Ec2 Maintainer"
 count = 1
 last_second = get_second()
 
@@ -52,7 +52,7 @@ while True:
                 description=f"{instance} is down! Restarting now..."
             )
             webhook = DiscordWebhook(
-                username = "Ec2-Maintainer", 
+                username = project_name, 
                 avatar_url=logo_link, 
                 url=config[instance]['discord'], 
                 embeds=[embed]
@@ -77,7 +77,7 @@ while True:
                 color='65280',
             )
             webhook = DiscordWebhook(
-                username = "Ec2-Maintainer",
+                username = project_name,
                 avatar_url=logo_link,
                 url=config[instance]['discord'], 
                 embeds=[embed]
