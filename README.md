@@ -5,44 +5,14 @@ This is a simple script that will stop and start EC2 instances if it fails to GE
 ![image](https://github.com/SurajBhari/ec2_maintainer/assets/45149585/c0021465-01af-4c82-8c7f-a9ae7ec33502)
 
 ## Flowchart
-```
-+-------------------+
-|       Start       |
-+-------------------+
-        |
-        v
-+-------------------+
-|   Initialize      |
-|    variables      |
-+-------------------+
-        |
-        v
-+-------------------+
-|  Enter while      |
-|    loop           |
-+-------------------+        
-        |                    
-        |                    
-        |<-------------------+<-----+
-        |                    |      |
-        v                    |      |      
-+------------------==-+      |      |
-|  URL reachable      |>-----+  YES |      
-|  for T amount       |             |
-+---------------------+             |
-|   Continue loop     |             |
-|       |             |             |
-+-------|-------------+             |
-        |       v  ^                |
-        |       |no|                |
-        | No    +--+                |
-        v                           |
-+------------------------+          |
-|Restart the EC2 server  |          |
-| (handle                |          |
-|  unreachable URL)      |          |
-+------------------------+          |
-        + --------->----------------+
+```mermaid
+graph TD
+  A[Start] --> B[Initialize variables]
+  B --> C[Enter while loop]
+  C --> D{URL reachable for T amount?}
+  D -->|Yes| C
+  D -->|No| E[Restart the EC2 server<br>handle unreachable URL]
+  E --> C
 ```
 
 
