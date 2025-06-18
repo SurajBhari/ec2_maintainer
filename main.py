@@ -16,6 +16,7 @@ last_second = get_second()
 continous_down = {} # store continous down instances and the count 
 config = json.load(open('config.json', "r"))
 
+discord_message_dict = {} # store discord messages so that we dont spam the maintainer with messages
 # notify all of the discord that the maintainer is starting 
 for instance in config.keys():
     if not config[instance]['discord']:
@@ -59,6 +60,21 @@ while True:
                 continue
             if response.status_code == location["response_code"]:
                 print(f"{instance} Responded with correct code!")
+                if instance in discord_message_dict:
+                    webhook = discord_message_dict[instance]
+                else:
+                    webhook = DiscordWebhook(
+                        username = project_name, 
+                        avatar_url=logo_link, 
+                        url=config[instance]['discord'], 
+                    )
+                webhook.content = f"<t:{int(time.time())}:R> | {instance} is up! Response code: {response.status_code} "
+                if instance in discord_message_dict:
+                    webhook.edit() # if we already have a message, edit it
+                else:
+                    webhook.execute()
+                webhook.execute()
+                discord_message_dict[instance] = webhook
                 ok = True
                 break
             print(f"{instance} said {response.status_code}!")
@@ -81,6 +97,8 @@ while True:
                 embeds=[embed]
             )
             response = webhook.execute()
+            if instance in discord_message_dict:
+                del discord_message_dict[instance] # remove the message so that we can send a new one
         continous_down[instance] = continous_down.get(instance, 0) + 1
         ec2 = config[instance]['ec2']
         ec2 = boto3.client(
