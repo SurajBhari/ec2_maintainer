@@ -14,6 +14,25 @@ count = 1
 last_second = get_second()
 
 continous_down = {} # store continous down instances and the count 
+config = json.load(open('config.json', "r"))
+
+# notify all of the discord that the maintainer is starting 
+for instance in config.keys():
+    if not config[instance]['discord']:
+        continue
+    embed = DiscordEmbed(
+        title=f"{instance} is starting!", 
+        color=0x00ab00,
+        description=f"{instance} is starting! Checking every {config[instance]['interval']} seconds..."
+    )
+    webhook = DiscordWebhook(
+        username = project_name, 
+        avatar_url=logo_link, 
+        url=config[instance]['discord'], 
+        embeds=[embed]
+    )
+    response = webhook.execute()
+    
 while True:
     while last_second == get_second():
         time.sleep(0.1)
